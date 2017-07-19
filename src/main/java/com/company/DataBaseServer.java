@@ -26,7 +26,7 @@ public class DataBaseServer {
     }
     public Statement returnStatement() throws SQLException {
         if(connection == null) {
-            throw new IllegalStateException("Call conect() first!");
+            throw new IllegalStateException("Call connect() first!");
         }
 
         return connection.createStatement();
