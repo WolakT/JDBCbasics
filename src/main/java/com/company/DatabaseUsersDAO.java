@@ -18,9 +18,11 @@ public class DatabaseUsersDAO implements UsersDAO {
     public DatabaseUsersDAO(DataBaseServer server) {
         this.server = server;
     }
+
     public void connect() throws SQLException {
         server.connect();
     }
+
     public List<User> get() {
         Statement statement1 = null;
         List<User> list = new ArrayList<User>();
@@ -40,7 +42,7 @@ public class DatabaseUsersDAO implements UsersDAO {
             e.printStackTrace();
         } finally {
 
-            if (statement1 != null){
+            if (statement1 != null) {
                 try {
                     statement1.close();
                 } catch (SQLException e) {
@@ -57,15 +59,16 @@ public class DatabaseUsersDAO implements UsersDAO {
         try {
             this.connect();
             statement1 = server.returnStatement();
+
             statement1.executeUpdate("insert into users (name, surname) value" +
-                    " (\"" + user.getName() + "\",\"" + user.getSurname() +"\");");
+                    " (\"" + user.getName() + "\",\"" + user.getSurname() + "\");");
 
 
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
 
-            if (statement1 != null){
+            if (statement1 != null) {
                 try {
                     statement1.close();
                 } catch (SQLException e) {
@@ -77,10 +80,45 @@ public class DatabaseUsersDAO implements UsersDAO {
     }
 
     public void update(User user) {
+        Statement statement = null;
+        try {
+            statement = server.returnStatement();
+
+            statement.executeUpdate("update users set name = \"" + user.getName() +
+                    "\", surname = \"" + user.getSurname() + "\" where id = " + user.getId());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
 
     }
 
     public void delete(User user) {
 
+        Statement statement1 = null;
+        try {
+            statement1 = server.returnStatement();
+
+            statement1.executeUpdate("delete from users where id = " + user.getId());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (statement1 != null) {
+                try {
+                    statement1.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
+
 }
+
